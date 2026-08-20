@@ -47,6 +47,27 @@ export function tick(state) {
   state.lastTick = Date.now();
 }
 
+// Est-ce que la condition de déblocage d'une ère est remplie ? (Phase 2)
+export function isUnlockConditionMet(era, state) {
+  if (!era.unlockCondition) return true;
+  const c = era.unlockCondition;
+  if (c.type === "totalConnaissance") {
+    return state.stats.totalConnaissanceCumulee >= c.amount;
+  }
+  return false;
+}
+
+// Débloque séquentiellement la prochaine ère si sa condition est remplie.
+// Retourne l'ère nouvellement débloquée, ou null.
+export function checkEraUnlocks(state) {
+  const next = ERAS.find((e) => e.id === state.maxEraUnlocked + 1);
+  if (next && isUnlockConditionMet(next, state)) {
+    state.maxEraUnlocked = next.id;
+    return next;
+  }
+  return null;
+}
+
 // Calcul de la production accumulée pendant l'absence du joueur
 export function computeOfflineProgress(state, offlineExtensionHours = 0, offlineExtensionEfficiency = 0) {
   const now = Date.now();

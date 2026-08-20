@@ -31,8 +31,8 @@ Structure de fichiers, state management, moteur de tick, formatage des nombres (
 ### Phase 1 — Ère 1 : Âge de Pierre ✅
 Générateurs Tailleur de silex / Conteur du foyer, sous-ressource Feu, ressource Connaissance, coût `C0 × 1.07^k`, achat unité/x10/max, milestones de possession (10/25/50/100/250 → multiplicateurs), panneau de ressources, thème "terre/ocre".
 
-### Phase 2 — Ères 2 & 3 (Bronze/Fer, Antiquité)
-Généralisation du système à plusieurs ères actives, sous-ressources Métal et Parchemin + générateurs, déblocage d'ère (condition + transition visuelle/thème).
+### Phase 2 — Ères 2 & 3 (Bronze/Fer, Antiquité) ✅
+Généralisation du système à plusieurs ères actives en parallèle (toutes les ères débloquées produisent en simultané, on navigue entre elles via des onglets), sous-ressources Métal et Parchemin + générateurs, déblocage automatique d'ère par seuil de Connaissance cumulée (1 000 pour l'Ère 2, 20 000 pour l'Ère 3) avec toast de notification et thème visuel dédié (bronze, antique).
 
 ### Phase 3 — Prestige Tier 1 : "l'Éon" (Chronons)
 Condition d'activation (Ère 4 débloquée OU 10⁸ Connaissance cumulée), formule de gain, reset de la run, bonus passif +1%/Chronon non dépensé, écran de confirmation de prestige.

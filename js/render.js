@@ -39,6 +39,47 @@ export function renderResources(state) {
   }
 }
 
+export function renderEraTabs(state, onSwitchEra) {
+  const container = document.getElementById("era-tabs");
+  if (!container) return;
+  container.innerHTML = "";
+
+  // Ères débloquées : onglets cliquables
+  for (const era of ERAS) {
+    if (era.id > state.maxEraUnlocked) continue;
+    const tab = document.createElement("button");
+    tab.className = `era-tab ${era.id === state.currentEra ? "active" : ""}`;
+    tab.textContent = era.name;
+    tab.addEventListener("click", () => onSwitchEra(era.id));
+    container.appendChild(tab);
+  }
+
+  // Prochaine ère verrouillée : aperçu de la condition
+  const next = ERAS.find((e) => e.id === state.maxEraUnlocked + 1);
+  if (next && next.unlockCondition) {
+    const tab = document.createElement("div");
+    tab.className = "era-tab locked";
+    const c = next.unlockCondition;
+    const conditionText = c.type === "totalConnaissance"
+      ? `${formatNumber(c.amount, state.numberFormat)} 🧠 cumulée`
+      : "";
+    tab.innerHTML = `🔒 ${next.name}<br><span class="era-tab-condition">${conditionText}</span>`;
+    container.appendChild(tab);
+  }
+}
+
+export function showEraUnlockedToast(era) {
+  const toast = document.createElement("div");
+  toast.className = "era-unlock-toast";
+  toast.textContent = `Nouvelle ère débloquée : ${era.name} !`;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.classList.add("visible"), 10);
+  setTimeout(() => {
+    toast.classList.remove("visible");
+    setTimeout(() => toast.remove(), 400);
+  }, 3500);
+}
+
 export function renderGenerators(state, onBuy) {
   const era = ERAS.find((e) => e.id === state.currentEra);
   const container = document.getElementById("generator-list");

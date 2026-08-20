@@ -2,12 +2,14 @@
 
 import { createInitialState } from "./state.js";
 import { saveToLocalStorage, loadFromLocalStorage, exportSaveAsFile, importSaveFromFile } from "./storage.js";
-import { tick, computeOfflineProgress } from "./simulation.js";
+import { tick, computeOfflineProgress, checkEraUnlocks } from "./simulation.js";
 import { TICK_MS } from "./config.js";
 import {
   renderResources,
   renderGenerators,
   renderUpgrades,
+  renderEraTabs,
+  showEraUnlockedToast,
   applyEraTheme,
   setBuyMode,
   showOfflineModal,
@@ -18,9 +20,15 @@ let state = loadFromLocalStorage() || createInitialState();
 
 function renderAll() {
   applyEraTheme(state.currentEra);
+  renderEraTabs(state, switchEra);
   renderResources(state);
   renderGenerators(state, buyGenerator);
   renderUpgrades(state, buyUpgrade);
+}
+
+function switchEra(eraId) {
+  state.currentEra = eraId;
+  renderAll();
 }
 
 function buyGenerator(genId, qty, cost, costResource) {
@@ -68,8 +76,14 @@ function setupSaveControls() {
 function startGameLoop() {
   setInterval(() => {
     tick(state);
-    renderResources(state);
-    renderGenerators(state, buyGenerator); // pour rafraîchir les coûts/production affichés
+    const unlocked = checkEraUnlocks(state);
+    if (unlocked) {
+      showEraUnlockedToast(unlocked);
+      renderAll(); // nouvel onglet à afficher
+    } else {
+      renderResources(state);
+      renderGenerators(state, buyGenerator); // pour rafraîchir les coûts/production affichés
+    }
   }, TICK_MS);
 
   setInterval(() => saveToLocalStorage(state), 10000); // autosave 10s

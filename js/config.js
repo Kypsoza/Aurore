@@ -40,6 +40,82 @@ export const ERAS = [
       },
     ],
   },
+  {
+    id: 2,
+    name: "Âge du Bronze / Fer",
+    theme: "bronze",
+    subResource: { id: "metal", name: "Métal", icon: "⚒️" },
+    // Débloquée dès 1 000 Connaissance cumulée au total sur la partie
+    unlockCondition: { type: "totalConnaissance", amount: 1000 },
+    generators: [
+      {
+        id: "fonderie_artisanale",
+        name: "Fonderie artisanale",
+        icon: "🔥⚒️",
+        baseCost: 100,
+        costScale: 1.08,
+        costResource: "connaissance",
+        produces: [{ resource: "metal", amount: 0.8 }],
+      },
+      {
+        id: "mine_surface",
+        name: "Mine de surface",
+        icon: "⛏️",
+        baseCost: 250,
+        costScale: 1.08,
+        costResource: "connaissance",
+        produces: [{ resource: "connaissance", amount: 1.2 }],
+      },
+    ],
+    localUpgrades: [
+      {
+        id: "alliage_renforce",
+        name: "Alliage renforcé",
+        description: "Double la production de Métal de l'Ère 2.",
+        cost: 5000,
+        costResource: "connaissance",
+        effect: { type: "era_multiplier", era: 2, resource: "metal", factor: 2 },
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "Antiquité",
+    theme: "antique",
+    subResource: { id: "parchemin", name: "Parchemin", icon: "📜" },
+    // Débloquée à 20 000 Connaissance cumulée au total sur la partie
+    unlockCondition: { type: "totalConnaissance", amount: 20000 },
+    generators: [
+      {
+        id: "scribe",
+        name: "Scribe",
+        icon: "🖋️",
+        baseCost: 1200,
+        costScale: 1.09,
+        costResource: "connaissance",
+        produces: [{ resource: "parchemin", amount: 1 }],
+      },
+      {
+        id: "grande_bibliotheque",
+        name: "Grande Bibliothèque",
+        icon: "🏛️",
+        baseCost: 4000,
+        costScale: 1.09,
+        costResource: "connaissance",
+        produces: [{ resource: "connaissance", amount: 3 }],
+      },
+    ],
+    localUpgrades: [
+      {
+        id: "canon_du_savoir",
+        name: "Canon du Savoir",
+        description: "Double la production de Parchemin de l'Ère 3.",
+        cost: 30000,
+        costResource: "connaissance",
+        effect: { type: "era_multiplier", era: 3, resource: "parchemin", factor: 2 },
+      },
+    ],
+  },
 ];
 
 // Paliers de possession → multiplicateur (Phase 0/1)
