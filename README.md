@@ -4,6 +4,17 @@ Jeu incrémental / idle spatial à métaprogression — de l'Âge de Pierre au N
 
 🔗 **Jouer** : https://kypsoza.github.io/Aurore/
 
+## Tester rapidement (outils de debug)
+Ouvre la console du navigateur (F12 → onglet Console) et utilise :
+```js
+debugAurore.add("connaissance", 10000)  // ajoute de la Connaissance
+debugAurore.add("metal", 500)           // ajoute une sous-ressource par son id
+debugAurore.addAll(10000)               // ajoute à toutes les ressources connues d'un coup
+debugAurore.state                       // inspecter l'état complet de la partie
+debugAurore.reset()                     // repart de zéro
+```
+Utile notamment pour franchir vite les seuils de déblocage d'ère (1 000 / 20 000 Connaissance cumulée).
+
 ## Choix techniques
 - Vanilla JavaScript (ES Modules), sans build step, pour un hébergement GitHub Pages simple sans étape de compilation.
 - Architecture data-driven : chaque ère est décrite comme des objets de config (générateurs, coûts, sous-ressource) dans `js/config.js`, pas codée en dur dans la logique. Ça permet d'ajouter les Ères 2 à 10 sans réécrire le moteur.

@@ -101,6 +101,35 @@ function init() {
   handleOfflineCatchUp();
   renderAll();
   startGameLoop();
+  exposeDebugTools();
+}
+
+// Outils de test accessibles depuis la console du navigateur (F12) :
+//   debugAurore.add("connaissance", 10000)  → ajoute de la ressource
+//   debugAurore.addAll(10000)               → ajoute à toutes les ressources connues
+//   debugAurore.state                       → inspecter l'état complet
+//   debugAurore.reset()                     → repart de zéro
+function exposeDebugTools() {
+  window.debugAurore = {
+    get state() { return state; },
+    add(resource, amount) {
+      state.resources[resource] = (state.resources[resource] || 0) + amount;
+      if (resource === "connaissance") state.stats.totalConnaissanceCumulee += amount;
+      renderAll();
+    },
+    addAll(amount) {
+      for (const key of Object.keys(state.resources)) {
+        state.resources[key] += amount;
+      }
+      state.stats.totalConnaissanceCumulee += amount;
+      renderAll();
+    },
+    reset() {
+      state = createInitialState();
+      renderAll();
+    },
+  };
+  console.log("%cOutils de debug Aurore disponibles via window.debugAurore (voir README).", "color:#c78a4a");
 }
 
 document.addEventListener("DOMContentLoaded", init);

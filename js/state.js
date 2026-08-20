@@ -13,7 +13,7 @@ export function createInitialState() {
   return {
     version: 1,
     resources: {
-      connaissance: 0,
+      connaissance: 70, // amorce : de quoi acheter le 1er Conteur du foyer (60) et démarrer la boucle
       feu: 0,
     },
     generators, // { generatorId: quantitéPossédée }
