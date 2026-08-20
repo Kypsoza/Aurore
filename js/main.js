@@ -1,7 +1,7 @@
 // main.js — point d'entrée : orchestre state, simulation, storage et render
 
 import { createInitialState } from "./state.js";
-import { saveToLocalStorage, loadFromLocalStorage, exportSaveAsFile, importSaveFromFile } from "./storage.js";
+import { saveToLocalStorage, loadFromLocalStorage, exportSaveAsFile, importSaveFromFile, mergeWithDefaults } from "./storage.js";
 import { tick, computeOfflineProgress, checkEraUnlocks } from "./simulation.js";
 import { TICK_MS } from "./config.js";
 import {
@@ -16,7 +16,7 @@ import {
   hideOfflineModal,
 } from "./render.js";
 
-let state = loadFromLocalStorage() || createInitialState();
+let state = mergeWithDefaults(loadFromLocalStorage());
 
 function renderAll() {
   applyEraTheme(state.currentEra);
@@ -64,7 +64,7 @@ function setupSaveControls() {
     if (!file) return;
     try {
       const imported = await importSaveFromFile(file);
-      state = imported;
+      state = mergeWithDefaults(imported);
       renderAll();
     } catch (err) {
       alert("Fichier de sauvegarde invalide.");

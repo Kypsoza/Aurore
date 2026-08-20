@@ -1,6 +1,24 @@
 // storage.js — persistance
 
+import { createInitialState } from "./state.js";
+
 const SAVE_KEY = "aube_stellaire_save_v1";
+
+// Fusionne une sauvegarde (potentiellement ancienne) avec un état frais :
+// toute clé absente de la sauvegarde (nouveau générateur/amélioration ajouté
+// depuis) reçoit sa valeur par défaut au lieu de rester `undefined`.
+export function mergeWithDefaults(saved) {
+  const fresh = createInitialState();
+  if (!saved) return fresh;
+  return {
+    ...fresh,
+    ...saved,
+    resources: { ...fresh.resources, ...saved.resources },
+    generators: { ...fresh.generators, ...saved.generators },
+    upgrades: { ...fresh.upgrades, ...saved.upgrades },
+    stats: { ...fresh.stats, ...saved.stats },
+  };
+}
 
 export function saveToLocalStorage(state) {
   state.lastSave = Date.now();
